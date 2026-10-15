@@ -55,10 +55,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helper\RelayCommand.cs" />
+    <Compile Include="Model\PersonDpo.cs" />
     <Compile Include="ViewModel\PersonViewModel.cs" />
     <Compile Include="ViewModel\RoleViewModel.cs" />
     <Compile Include="View\WindowEmployer.xaml.cs">
       <DependentUpon>WindowEmployer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WindowNewEmployer.xaml.cs">
+      <DependentUpon>WindowNewEmployer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WindowNewRole.xaml.cs">
+      <DependentUpon>WindowNewRole.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\WindowRole.xaml.cs">
       <DependentUpon>WindowRole.xaml</DependentUpon>
@@ -76,6 +84,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\WindowEmployer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\WindowNewEmployer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\WindowNewRole.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
