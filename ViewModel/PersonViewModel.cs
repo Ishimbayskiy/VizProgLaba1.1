@@ -7,6 +7,8 @@ using VizProgLaba1._1.Helper;
 using VizProgLaba1._1.View;
 using System.Windows;
 using System.Windows.Input;
+using System.Collections.Generic;
+using System.Linq;
 namespace VizProgLaba1._1.ViewModel
 
 {
@@ -134,27 +136,22 @@ namespace VizProgLaba1._1.ViewModel
 
                         wnPerson.DataContext = per;
 
+
                         if (wnPerson.ShowDialog() == true)
                         {
                             Role r = (Role)wnPerson.CbRole.SelectedItem;
 
                             per.RoleName = r.NameRole;
 
+                            // Добавление в коллекцию отображения
                             ListPersonDpo.Add(per);
 
-                            Person p = new Person
-                            {
-                                Id = per.Id,
-                                RoleId = r.Id,
-                                FirstName = per.FirstName,
-                                LastName = per.LastName,
-                                Birthday = per.Birthday
-                            };
-
+                            // Добавление в коллекцию Person
+                            Person p = new Person();
+                            p = p.CopyFromPersonDPO(per);
                             ListPerson.Add(p);
-
-                            SelectedPersonDpo = per;
                         }
+
                     }));
             }
         }
@@ -179,8 +176,13 @@ namespace VizProgLaba1._1.ViewModel
 
                         wnPerson.DataContext = tempPerson;
 
+
                         if (wnPerson.ShowDialog() == true)
                         {
+                            // Сохранение данных в оперативной памяти
+                            // Перенос данных из временного класса
+                            // в класс отображения данных
+
                             Role r = (Role)wnPerson.CbRole.SelectedItem;
 
                             personDpo.RoleName = r.NameRole;
@@ -188,19 +190,19 @@ namespace VizProgLaba1._1.ViewModel
                             personDpo.LastName = tempPerson.LastName;
                             personDpo.Birthday = tempPerson.Birthday;
 
-                            foreach (Person p in ListPerson)
-                            {
-                                if (p.Id == personDpo.Id)
-                                {
-                                    p.RoleId = r.Id;
-                                    p.FirstName = personDpo.FirstName;
-                                    p.LastName = personDpo.LastName;
-                                    p.Birthday = personDpo.Birthday;
+                            // Перенос данных из класса отображения
+                            // данных в класс Person
 
-                                    break;
-                                }
-                            }
+                            FindPerson finder = new FindPerson(personDpo.Id);
+
+                            List<Person> listPerson = ListPerson.ToList();
+
+                            Person p = listPerson.Find(
+                                new Predicate<Person>(finder.PersonPredicate));
+
+                            p = p.CopyFromPersonDPO(personDpo);
                         }
+
 
                     }, (obj) => SelectedPersonDpo != null &&
                                 ListPersonDpo.Count > 0));

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using VizProgLaba1._1.ViewModel;
 namespace VizProgLaba1._1.Model
 {
     public class Person
@@ -19,6 +19,28 @@ namespace VizProgLaba1._1.Model
             this.Id = id; this.RoleId = roleId;
             this.FirstName = firstName; this.LastName = lastName; this.Birthday = birthday;
         }
+
+        public Person CopyFromPersonDPO(PersonDpo personDpo)
+        {
+            this.Id = personDpo.Id;
+            this.FirstName = personDpo.FirstName;
+            this.LastName = personDpo.LastName;
+            this.Birthday = personDpo.Birthday;
+
+            RoleViewModel vmRole = new RoleViewModel();
+
+            foreach (Role role in vmRole.ListRole)
+            {
+                if (role.NameRole == personDpo.RoleName)
+                {
+                    this.RoleId = role.Id;
+                    break;
+                }
+            }
+
+            return this;
+        }
+
     }
 }
 
