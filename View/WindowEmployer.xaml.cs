@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿
+using System.Windows;
 using VizProgLaba1._1.ViewModel;
 
 namespace VizProgLaba1._1.View
@@ -9,9 +10,7 @@ namespace VizProgLaba1._1.View
         {
             InitializeComponent();
 
-            PersonViewModel vmPerson = new PersonViewModel();
-            lvEmployee.ItemsSource = vmPerson.ListPerson;
+            DataContext = new PersonViewModel();
         }
     }
 }
-

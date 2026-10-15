@@ -4,15 +4,49 @@
         Title="Должности" Height="300" Width="400">
 
     <StackPanel>
-        <ListView x:Name="lvRole">
+
+
+        <StackPanel Orientation="Horizontal"
+            Margin="5,5,0,5">
+
+            <Button Content="Добавить"
+            Width="100"
+            Height="25"
+            Margin="5"
+            Command="{Binding AddRole}"/>
+
+            <Button Content="Редактировать"
+            Width="110"
+            Height="25"
+            Margin="5"
+            Command="{Binding EditRole}"/>
+
+            <Button Content="Удалить"
+            Width="100"
+            Height="25"
+            Margin="5"
+            Command="{Binding DeleteRole}"/>
+
+        </StackPanel>
+
+
+        <ListView x:Name="lvRole"
+                  ItemsSource="{Binding ListRole}"
+                  SelectedItem="{Binding SelectedRole, Mode=TwoWay}">
+
             <ListView.View>
                 <GridView>
+
                     <GridViewColumn Header="Код"
                                     DisplayMemberBinding="{Binding Id}" />
+
                     <GridViewColumn Header="Название должности"
                                     DisplayMemberBinding="{Binding NameRole}" />
+
                 </GridView>
             </ListView.View>
+
         </ListView>
+
     </StackPanel>
 </Window>
