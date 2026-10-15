@@ -3,14 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Главное окно" Height="250" Width="400">
 
-    <StackPanel Margin="20">
-        <Button Content="Сотрудники"
-                Click="Employee_OnClick"
-                Height="40"
-                Margin="0,0,0,10"/>
 
-        <Button Content="Должности"
-                Click="Role_OnClick"
-                Height="40"/>
-    </StackPanel>
-    </Window>
+    <Grid>
+        <Menu VerticalAlignment="Top">
+
+            <MenuItem x:Name="Employee"
+                  Header="Сотрудники"
+                  Click="Employee_OnClick"/>
+
+            <MenuItem x:Name="Role"
+                  Header="Должности"
+                  Click="Role_OnClick"/>
+
+        </Menu>
+    </Grid>
+
+</Window>
