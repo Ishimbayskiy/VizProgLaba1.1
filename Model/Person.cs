@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 
 namespace VizProgLaba1._1.Model
 {
@@ -13,12 +9,16 @@ namespace VizProgLaba1._1.Model
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime Birthday { get; set; }
+
         public Person() { }
+
         public Person(int id, int roleId, string firstName, string lastName, DateTime birthday)
         {
-            this.Id = id; this.RoleId = roleId;
-            this.FirstName = firstName; this.LastName = lastName; this.Birthday = birthday;
+            this.Id = id;
+            this.RoleId = roleId;
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.Birthday = birthday;
         }
     }
 }
-
