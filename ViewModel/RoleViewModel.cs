@@ -1,4 +1,4 @@
-﻿
+
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -88,7 +88,8 @@ namespace VizProgLaba1._1.ViewModel
 
                          Role role = new Role { Id = maxIdRole };
 
-                         wnRole.DataContext = role;
+                         wnRole.DataContext = new WindowNewRoleViewModel(
+                             role, result => wnRole.DialogResult = result);
 
                          if (wnRole.ShowDialog() == true)
                          {
@@ -120,7 +121,8 @@ namespace VizProgLaba1._1.ViewModel
                         Role tempRole = new Role();
                         tempRole = role.ShallowCopy();
 
-                        wnRole.DataContext = tempRole;
+                        wnRole.DataContext = new WindowNewRoleViewModel(
+                            tempRole, result => wnRole.DialogResult = result);
 
                         if (wnRole.ShowDialog() == true)
                         {

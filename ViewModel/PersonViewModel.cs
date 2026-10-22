@@ -133,7 +133,8 @@ namespace VizProgLaba1._1.ViewModel
                             Birthday = DateTime.Now
                         };
 
-                        wnPerson.DataContext = per;
+                        wnPerson.DataContext = new WindowNewEmployeeViewModel(
+                            per, result => wnPerson.DialogResult = result);
 
 
                         if (wnPerson.ShowDialog() == true)
@@ -173,7 +174,8 @@ namespace VizProgLaba1._1.ViewModel
 
                         PersonDpo tempPerson = personDpo.ShallowCopy();
 
-                        wnPerson.DataContext = tempPerson;
+                        wnPerson.DataContext = new WindowNewEmployeeViewModel(
+                            tempPerson, result => wnPerson.DialogResult = result);
 
 
                         if (wnPerson.ShowDialog() == true)

@@ -1,6 +1,4 @@
-
 using System.Windows;
-using VizProgLaba1._1.ViewModel;
 
 namespace VizProgLaba1._1.View
 {
@@ -9,20 +7,6 @@ namespace VizProgLaba1._1.View
         public WindowNewEmployee()
         {
             InitializeComponent();
-
-            RoleViewModel vmRole = new RoleViewModel();
-
-            CbRole.ItemsSource = vmRole.ListRole;
-        }
-
-        private void Save_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-        }
-
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
         }
     }
 }

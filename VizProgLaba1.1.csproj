@@ -60,6 +60,8 @@
     <Compile Include="Helper\RelayCommand.cs" />
     <Compile Include="Model\PersonDpo.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\WindowNewEmployeeViewModel.cs" />
+    <Compile Include="ViewModel\WindowNewRoleViewModel.cs" />
     <Compile Include="ViewModel\PersonViewModel.cs" />
     <Compile Include="ViewModel\RoleViewModel.cs" />
     <Compile Include="View\WindowEmployee.xaml.cs">

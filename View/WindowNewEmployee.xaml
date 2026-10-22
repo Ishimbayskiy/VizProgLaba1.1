@@ -11,7 +11,7 @@
 
         <TextBlock Text="Код сотрудника:"/>
 
-        <TextBlock Text="{Binding Id}"
+        <TextBlock Text="{Binding Person.Id}"
                    Margin="0,5,0,10"/>
 
         <TextBlock Text="Фамилия:"/>
@@ -19,30 +19,31 @@
         <TextBox x:Name="tbLastName"
                  Height="25"
                  Margin="0,5,0,10"
-                 Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                 Text="{Binding Person.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock Text="Имя:"/>
 
         <TextBox x:Name="tbFirstName"
                  Height="25"
                  Margin="0,5,0,10"
-                 Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                 Text="{Binding Person.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock Text="Должность:"/>
 
         <ComboBox x:Name="CbRole"
                   Height="25"
                   Margin="0,5,0,10"
+                  ItemsSource="{Binding ListRole}"
                   DisplayMemberPath="NameRole"
                   SelectedValuePath="NameRole"
-                  SelectedValue="{Binding RoleName, Mode=TwoWay}"/>
+                  SelectedValue="{Binding Person.RoleName, Mode=TwoWay}"/>
 
         <TextBlock Text="Дата рождения:"/>
 
         <DatePicker x:Name="dpBirthday"
                     Height="30"
                     Margin="0,5,0,10"
-                    SelectedDate="{Binding Birthday, Mode=TwoWay}"/>
+                    SelectedDate="{Binding Person.Birthday, Mode=TwoWay}"/>
 
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right">
@@ -52,14 +53,14 @@
                     Height="30"
                     Margin="5"
                     IsDefault="True"
-                    Click="Save_Click"/>
+                    Command="{Binding Save}"/>
 
             <Button Content="Отмена"
                     Width="100"
                     Height="30"
                     Margin="5"
                     IsCancel="True"
-                    Click="Cancel_Click"/>
+                    Command="{Binding Cancel}"/>
 
         </StackPanel>
 
