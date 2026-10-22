@@ -53,7 +53,8 @@
                     Height="30"
                     Margin="5"
                     IsDefault="True"
-                    Command="{Binding Save}"/>
+                    Command="{Binding Save}"
+                    CommandParameter="{Binding SelectedItem, ElementName=CbRole}"/>
 
             <Button Content="Отмена"
                     Width="100"

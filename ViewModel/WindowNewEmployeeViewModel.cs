@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Windows;
 using VizProgLaba1._1.Helper;
 using VizProgLaba1._1.Model;
 
@@ -25,7 +26,20 @@ namespace VizProgLaba1._1.ViewModel
         {
             get
             {
-                return save ?? (save = new RelayCommand(obj => close(true)));
+                return save ?? (save = new RelayCommand(obj =>
+                {
+                    if (!(obj is Role))
+                    {
+                        MessageBox.Show(
+                            "Выберите должность!",
+                            "Ошибка",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    close(true);
+                }));
             }
         }
 
