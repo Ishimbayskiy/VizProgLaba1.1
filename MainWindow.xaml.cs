@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using VizProgLaba1._1.View;
 
 namespace VizProgLaba1._1
@@ -12,7 +12,7 @@ namespace VizProgLaba1._1
 
         private void Employee_OnClick(object sender, RoutedEventArgs e)
         {
-            WindowEmployer window = new WindowEmployer();
+            WindowEmployee window = new WindowEmployee();
             window.Show();
         }
 

@@ -10,17 +10,17 @@ namespace VizProgLaba1._1.Model
     {
         public int Id { get; set; }
 
-        private string roleName;
+        private string _roleName;
 
         public string RoleName
         {
             get
             {
-                return roleName;
+                return _roleName;
             }
             set
             {
-                roleName = value;
+                _roleName = value;
                 OnPropertyChanged("RoleName");
             }
         }

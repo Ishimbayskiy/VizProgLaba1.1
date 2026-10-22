@@ -1,12 +1,12 @@
-﻿
+
 using System.Windows;
 using VizProgLaba1._1.ViewModel;
 
 namespace VizProgLaba1._1.View
 {
-    public partial class WindowNewEmployer : Window
+    public partial class WindowNewEmployee : Window
     {
-        public WindowNewEmployer()
+        public WindowNewEmployee()
         {
             InitializeComponent();
 

@@ -1,4 +1,4 @@
-﻿<Window x:Class="VizProgLaba1._1.View.WindowNewEmployer"
+<Window x:Class="VizProgLaba1._1.View.WindowNewEmployee"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Новый сотрудник"

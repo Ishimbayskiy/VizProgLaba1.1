@@ -24,7 +24,7 @@ namespace VizProgLaba1._1.ViewModel
             {
                 selectedRole = value;
                 OnPropertyChanged("SelectedRole");
-                CommandManager.InvalidateRequerySuggested();
+                EditRole.CanExecute(true);
             }
         }
 
@@ -37,18 +37,18 @@ namespace VizProgLaba1._1.ViewModel
             ListRole.Add(new Role
             {
                 Id = 1,
-                NameRole = "Менеджер"
+                NameRole = "Директор"
             });
 
             ListRole.Add(new Role
             {
                 Id = 2,
-                NameRole = "Программист"
+                NameRole = "Бухгалтер"
             });
             ListRole.Add(new Role
             {
                 Id = 3,
-                NameRole = "Бухгалтер"
+                NameRole = "Менеджер"
             });
         }
 
@@ -70,35 +70,36 @@ namespace VizProgLaba1._1.ViewModel
 
         private RelayCommand addRole;
 
+
         public RelayCommand AddRole
         {
             get
             {
                 return addRole ??
-                    (addRole = new RelayCommand(obj =>
-                    {
-                        WindowNewRole wnRole = new WindowNewRole
-                        {
-                            Title = "Новая должность"
-                        };
+                     (addRole = new RelayCommand(obj =>
+                     {
+                         WindowNewRole wnRole = new WindowNewRole
+                         {
+                             Title = "Новая должность",
+                         };
 
-                        int maxIdRole = MaxId() + 1;
+                         // формирование кода новой должности
+                         int maxIdRole = MaxId() + 1;
 
-                        Role role = new Role
-                        {
-                            Id = maxIdRole
-                        };
+                         Role role = new Role { Id = maxIdRole };
 
-                        wnRole.DataContext = role;
+                         wnRole.DataContext = role;
 
-                        if (wnRole.ShowDialog() == true)
-                        {
-                            ListRole.Add(role);
-                            SelectedRole = role;
-                        }
-                    }));
+                         if (wnRole.ShowDialog() == true)
+                         {
+                             ListRole.Add(role);
+                         }
+
+                         SelectedRole = role;
+                     }));
             }
         }
+
 
         private RelayCommand editRole;
 
@@ -116,7 +117,8 @@ namespace VizProgLaba1._1.ViewModel
 
                         Role role = SelectedRole;
 
-                        Role tempRole = role.ShallowCopy();
+                        Role tempRole = new Role();
+                        tempRole = role.ShallowCopy();
 
                         wnRole.DataContext = tempRole;
 
@@ -151,7 +153,6 @@ namespace VizProgLaba1._1.ViewModel
                         if (result == MessageBoxResult.OK)
                         {
                             ListRole.Remove(role);
-                            SelectedRole = null;
                         }
 
                     }, (obj) => SelectedRole != null &&

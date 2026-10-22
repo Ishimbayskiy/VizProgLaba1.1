@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -29,7 +29,7 @@ namespace VizProgLaba1._1.ViewModel
 
                 OnPropertyChanged("SelectedPersonDpo");
 
-                CommandManager.InvalidateRequerySuggested();
+
             }
         }
 
@@ -78,12 +78,11 @@ namespace VizProgLaba1._1.ViewModel
                 Birthday = new DateTime(1983, 05, 10)
             });
 
-            GetListPersonDpo();
+            ListPersonDpo = GetListPersonDpo();
         }
 
         public ObservableCollection<PersonDpo> GetListPersonDpo()
         {
-            ListPersonDpo.Clear();
 
             foreach (var person in ListPerson)
             {
@@ -121,7 +120,7 @@ namespace VizProgLaba1._1.ViewModel
                 return addPerson ??
                     (addPerson = new RelayCommand(obj =>
                     {
-                        WindowNewEmployer wnPerson = new WindowNewEmployer
+                        WindowNewEmployee wnPerson = new WindowNewEmployee
                         {
                             Title = "Новый сотрудник"
                         };
@@ -131,7 +130,7 @@ namespace VizProgLaba1._1.ViewModel
                         PersonDpo per = new PersonDpo
                         {
                             Id = maxIdPerson,
-                            Birthday = DateTime.Today
+                            Birthday = DateTime.Now
                         };
 
                         wnPerson.DataContext = per;
@@ -152,7 +151,7 @@ namespace VizProgLaba1._1.ViewModel
                             ListPerson.Add(p);
                         }
 
-                    }));
+                    }, (obj) => true));
             }
         }
 
@@ -165,9 +164,9 @@ namespace VizProgLaba1._1.ViewModel
                 return editPerson ??
                     (editPerson = new RelayCommand(obj =>
                     {
-                        WindowNewEmployer wnPerson = new WindowNewEmployer
+                        WindowNewEmployee wnPerson = new WindowNewEmployee
                         {
-                            Title = "Редактирование сотрудника"
+                            Title = "Редактирование данных сотрудника"
                         };
 
                         PersonDpo personDpo = SelectedPersonDpo;
