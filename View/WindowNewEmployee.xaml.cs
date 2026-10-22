@@ -17,6 +17,16 @@ namespace VizProgLaba1._1.View
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            if (CbRole.SelectedItem == null)
+            {
+                MessageBox.Show(
+                    "Выберите должность!",
+                    "Ошибка",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
             DialogResult = true;
         }
 
