@@ -1,5 +1,5 @@
 using System.Windows;
-using VizProgLaba1._1.View;
+using VizProgLaba1._1.ViewModel;
 
 namespace VizProgLaba1._1
 {
@@ -8,18 +8,7 @@ namespace VizProgLaba1._1
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void Employee_OnClick(object sender, RoutedEventArgs e)
-        {
-            WindowEmployee window = new WindowEmployee();
-            window.Show();
-        }
-
-        private void Role_OnClick(object sender, RoutedEventArgs e)
-        {
-            WindowRole window = new WindowRole();
-            window.Show();
+            DataContext = new MainWindowViewModel();
         }
     }
 }

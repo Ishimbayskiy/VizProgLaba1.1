@@ -59,6 +59,7 @@
     <Compile Include="Helper\FindRole.cs" />
     <Compile Include="Helper\RelayCommand.cs" />
     <Compile Include="Model\PersonDpo.cs" />
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\PersonViewModel.cs" />
     <Compile Include="ViewModel\RoleViewModel.cs" />
     <Compile Include="View\WindowEmployee.xaml.cs">
