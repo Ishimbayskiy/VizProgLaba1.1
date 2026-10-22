@@ -12,17 +12,6 @@ namespace VizProgLaba1._1.View
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(tbRole.Text))
-            {
-                MessageBox.Show(
-                    "Введите название должности!",
-                    "Ошибка",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-
-                return;
-            }
-
             DialogResult = true;
         }
 
