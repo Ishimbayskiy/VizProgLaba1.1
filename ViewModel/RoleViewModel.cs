@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using Newtonsoft.Json;
 
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,18 +14,23 @@ namespace VizProgLaba1._1.ViewModel
 {
     public class RoleViewModel : INotifyPropertyChanged
     {
-        private Role selectedRole;
+        readonly string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+            "DataModels", "RoleData.json");
+        string _jsonRoles = String.Empty;
+        public string Error { get; set; }
+
+        private Role _selectedRole;
 
 
         public Role SelectedRole
         {
             get
             {
-                return selectedRole;
+                return _selectedRole;
             }
             set
             {
-                selectedRole = value;
+                _selectedRole = value;
                 OnPropertyChanged("SelectedRole");
                 EditRole.CanExecute(true);
             }
@@ -34,22 +42,7 @@ namespace VizProgLaba1._1.ViewModel
 
         public RoleViewModel()
         {
-            ListRole.Add(new Role
-            {
-                Id = 1,
-                NameRole = "Директор"
-            });
-
-            ListRole.Add(new Role
-            {
-                Id = 2,
-                NameRole = "Бухгалтер"
-            });
-            ListRole.Add(new Role
-            {
-                Id = 3,
-                NameRole = "Менеджер"
-            });
+            ListRole = LoadRole();
         }
 
         public int MaxId()
@@ -68,15 +61,15 @@ namespace VizProgLaba1._1.ViewModel
             return max;
         }
 
-        private RelayCommand addRole;
+        private RelayCommand _addRole;
 
 
         public RelayCommand AddRole
         {
             get
             {
-                return addRole ??
-                     (addRole = new RelayCommand(obj =>
+                return _addRole ??
+                     (_addRole = new RelayCommand(obj =>
                      {
                          WindowNewRole wnRole = new WindowNewRole
                          {
@@ -94,6 +87,7 @@ namespace VizProgLaba1._1.ViewModel
                          if (wnRole.ShowDialog() == true)
                          {
                              ListRole.Add(role);
+                             SaveChanges(ListRole);
                          }
 
                          SelectedRole = role;
@@ -102,14 +96,14 @@ namespace VizProgLaba1._1.ViewModel
         }
 
 
-        private RelayCommand editRole;
+        private RelayCommand _editRole;
 
         public RelayCommand EditRole
         {
             get
             {
-                return editRole ??
-                    (editRole = new RelayCommand(obj =>
+                return _editRole ??
+                    (_editRole = new RelayCommand(obj =>
                     {
                         WindowNewRole wnRole = new WindowNewRole
                         {
@@ -127,6 +121,7 @@ namespace VizProgLaba1._1.ViewModel
                         if (wnRole.ShowDialog() == true)
                         {
                             role.NameRole = tempRole.NameRole;
+                            SaveChanges(ListRole);
                         }
 
                     }, (obj) => SelectedRole != null &&
@@ -134,14 +129,14 @@ namespace VizProgLaba1._1.ViewModel
             }
         }
 
-        private RelayCommand deleteRole;
+        private RelayCommand _deleteRole;
 
         public RelayCommand DeleteRole
         {
             get
             {
-                return deleteRole ??
-                    (deleteRole = new RelayCommand(obj =>
+                return _deleteRole ??
+                    (_deleteRole = new RelayCommand(obj =>
                     {
                         Role role = SelectedRole;
 
@@ -155,12 +150,52 @@ namespace VizProgLaba1._1.ViewModel
                         if (result == MessageBoxResult.OK)
                         {
                             ListRole.Remove(role);
+                            SaveChanges(ListRole);
                         }
 
                     }, (obj) => SelectedRole != null &&
                                 ListRole.Count > 0));
             }
         }
+
+        #region Methods
+        /// <summary>
+        /// Загрузка JSON-файла с данными по должностям.
+        /// </summary>
+        public ObservableCollection<Role> LoadRole()
+        {
+            _jsonRoles = File.ReadAllText(path);
+            ListRole = JsonConvert.DeserializeObject<ObservableCollection<Role>>(_jsonRoles)
+                ?? new ObservableCollection<Role>();
+            return ListRole;
+        }
+
+        /// <summary>
+        /// Сохранение изменённой коллекции в JSON-файл.
+        /// </summary>
+        private void SaveChanges(ObservableCollection<Role> listRole)
+        {
+            var jsonRole = JsonConvert.SerializeObject(listRole);
+            try
+            {
+                using (StreamWriter writer = File.CreateText(path))
+                {
+                    writer.Write(jsonRole);
+                }
+                Error = string.Empty;
+            }
+            catch (IOException e)
+            {
+                Error = "Ошибка записи JSON-файла\n" + e.Message;
+                MessageBox.Show(Error, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                Error = "Ошибка записи JSON-файла\n" + e.Message;
+                MessageBox.Show(Error, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 

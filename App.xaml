@@ -1,9 +1,16 @@
-﻿<Application x:Class="VizProgLaba1._1.App"
+<Application x:Class="VizProgLaba1._1.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:VizProgLaba1._1"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <Style x:Key="TextBoxDate" TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
          
     </Application.Resources>
 </Application>

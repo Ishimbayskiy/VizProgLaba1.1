@@ -1,6 +1,7 @@
-﻿
+
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using VizProgLaba1._1.ViewModel;
 
@@ -55,9 +56,9 @@ namespace VizProgLaba1._1.Model
             }
         }
 
-        private DateTime birthday;
+        private string birthday;
 
-        public DateTime Birthday
+        public string Birthday
         {
             get
             {
@@ -73,7 +74,7 @@ namespace VizProgLaba1._1.Model
         public PersonDpo() { }
 
         public PersonDpo(int id, string roleName,
-            string firstName, string lastName, DateTime birthday)
+            string firstName, string lastName, string birthday)
         {
             this.Id = id;
             this.RoleName = roleName;
@@ -93,7 +94,7 @@ namespace VizProgLaba1._1.Model
 
             RoleViewModel vmRole = new RoleViewModel();
 
-            string role = string.Empty;
+            string role = "Не задано";
 
             foreach (var r in vmRole.ListRole)
             {
@@ -104,16 +105,30 @@ namespace VizProgLaba1._1.Model
                 }
             }
 
-            if (role != string.Empty)
-            {
-                perDpo.Id = person.Id;
-                perDpo.RoleName = role;
-                perDpo.FirstName = person.FirstName;
-                perDpo.LastName = person.LastName;
-                perDpo.Birthday = person.Birthday;
-            }
+            perDpo.Id = person.Id;
+            perDpo.RoleName = role;
+            perDpo.FirstName = person.FirstName;
+            perDpo.LastName = person.LastName;
+            perDpo.Birthday = person.Birthday;
 
             return perDpo;
+        }
+
+        /// <summary>
+        /// Приведение даты рождения к строке dd.MM.yyyy для JSON.
+        /// </summary>
+        public static string GetStringBirthday(string value)
+        {
+            DateTime date;
+            if (DateTime.TryParse(value, CultureInfo.GetCultureInfo("ru-RU"),
+                    DateTimeStyles.None, out date) ||
+                DateTime.TryParse(value, CultureInfo.CurrentCulture,
+                    DateTimeStyles.None, out date))
+            {
+                return date.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture);
+            }
+
+            throw new FormatException("Некорректная дата рождения.");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

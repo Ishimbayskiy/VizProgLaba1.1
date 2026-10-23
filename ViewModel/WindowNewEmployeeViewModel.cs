@@ -38,6 +38,17 @@ namespace VizProgLaba1._1.ViewModel
                         return;
                     }
 
+                    try
+                    {
+                        Person.Birthday = PersonDpo.GetStringBirthday(Person.Birthday);
+                    }
+                    catch (FormatException)
+                    {
+                        MessageBox.Show("Введите корректную дату рождения!", "Ошибка",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
                     close(true);
                 }));
             }
