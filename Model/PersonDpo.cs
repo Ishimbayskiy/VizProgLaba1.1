@@ -94,7 +94,7 @@ namespace VizProgLaba1._1.Model
 
             RoleViewModel vmRole = new RoleViewModel();
 
-            string role = "Не задано";
+            string role = string.Empty;
 
             foreach (var r in vmRole.ListRole)
             {
@@ -105,11 +105,14 @@ namespace VizProgLaba1._1.Model
                 }
             }
 
-            perDpo.Id = person.Id;
-            perDpo.RoleName = role;
-            perDpo.FirstName = person.FirstName;
-            perDpo.LastName = person.LastName;
-            perDpo.Birthday = person.Birthday;
+            if (role != string.Empty)
+            {
+                perDpo.Id = person.Id;
+                perDpo.RoleName = role;
+                perDpo.FirstName = person.FirstName;
+                perDpo.LastName = person.LastName;
+                perDpo.Birthday = person.Birthday;
+            }
 
             return perDpo;
         }
@@ -119,16 +122,8 @@ namespace VizProgLaba1._1.Model
         /// </summary>
         public static string GetStringBirthday(string value)
         {
-            DateTime date;
-            if (DateTime.TryParse(value, CultureInfo.GetCultureInfo("ru-RU"),
-                    DateTimeStyles.None, out date) ||
-                DateTime.TryParse(value, CultureInfo.CurrentCulture,
-                    DateTimeStyles.None, out date))
-            {
-                return date.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture);
-            }
-
-            throw new FormatException("Некорректная дата рождения.");
+            return DateTime.Parse(value, CultureInfo.GetCultureInfo("ru-RU"))
+                .ToString("dd.MM.yyyy");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

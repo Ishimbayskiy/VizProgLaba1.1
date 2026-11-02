@@ -11,11 +11,6 @@ namespace VizProgLaba1._1.View
 
         private void tbBirthday_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (ClBirthday == null)
-            {
-                return;
-            }
-
             if (tbBirthday.Visibility == Visibility.Hidden)
             {
                 ClBirthday.Visibility = Visibility.Visible;

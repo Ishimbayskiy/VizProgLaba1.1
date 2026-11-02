@@ -8,8 +8,6 @@ using VizProgLaba1._1.Model;
 using VizProgLaba1._1.Helper;
 using VizProgLaba1._1.View;
 using System.Windows;
-using System.Windows.Input;
-using System.Collections.Generic;
 using System.Linq;
 namespace VizProgLaba1._1.ViewModel
 
@@ -43,21 +41,19 @@ namespace VizProgLaba1._1.ViewModel
 
 
         public ObservableCollection<Person> ListPerson { get; set; }
-            = new ObservableCollection<Person>();
 
         public ObservableCollection<PersonDpo> ListPersonDpo { get; set; }
-            = new ObservableCollection<PersonDpo>();
 
         public PersonViewModel()
         {
+            ListPerson = new ObservableCollection<Person>();
+            ListPersonDpo = new ObservableCollection<PersonDpo>();
             ListPerson = LoadPerson();
             ListPersonDpo = GetListPersonDpo();
         }
 
         public ObservableCollection<PersonDpo> GetListPersonDpo()
         {
-            ListPersonDpo.Clear();
-
             foreach (var person in ListPerson)
             {
                 PersonDpo p = new PersonDpo();
@@ -114,23 +110,25 @@ namespace VizProgLaba1._1.ViewModel
                         if (wnPerson.ShowDialog() == true)
                         {
                             Role r = (Role)wnPerson.CbRole.SelectedItem;
-                            if (r == null)
+                            if (r != null)
                             {
-                                Message = "Необходимо выбрать должность сотрудника.";
-                                return;
+                                per.RoleName = r.NameRole;
+                                per.Birthday = PersonDpo.GetStringBirthday(per.Birthday);
+                                ListPersonDpo.Add(per);
+
+                                // Добавление нового сотрудника в коллекцию ListPerson
+                                Person p = new Person();
+                                p = p.CopyFromPersonDpo(per);
+                                ListPerson.Add(p);
+                                try
+                                {
+                                    SaveChanges(ListPerson);
+                                }
+                                catch (Exception e)
+                                {
+                                    Error = "Ошибка добавления данных в json файл\n" + e.Message;
+                                }
                             }
-
-                            per.RoleName = r.NameRole;
-                            per.Birthday = PersonDpo.GetStringBirthday(per.Birthday);
-
-                            // Добавление в коллекцию отображения
-                            ListPersonDpo.Add(per);
-
-                            // Добавление в коллекцию Person
-                            Person p = new Person();
-                            p = p.CopyFromPersonDpo(per);
-                            ListPerson.Add(p);
-                            SaveChanges(ListPerson);
                         }
 
                     }, (obj) => true));
@@ -166,26 +164,32 @@ namespace VizProgLaba1._1.ViewModel
                             // в класс отображения данных
 
                             Role r = (Role)wnPerson.CbRole.SelectedItem;
-                            if (r == null)
+                            if (r != null)
+                            {
+                                personDpo.RoleName = r.NameRole;
+                                personDpo.FirstName = tempPerson.FirstName;
+                                personDpo.LastName = tempPerson.LastName;
+                                personDpo.Birthday = PersonDpo.GetStringBirthday(tempPerson.Birthday);
+
+                                // Перенос данных из класса отображения данных в класс Person
+                                var per = ListPerson.FirstOrDefault(p => p.Id == personDpo.Id);
+                                if (per != null)
+                                {
+                                    per = per.CopyFromPersonDpo(personDpo);
+                                }
+                                try
+                                {
+                                    SaveChanges(ListPerson);
+                                }
+                                catch (Exception e)
+                                {
+                                    Error = "Ошибка редактирования данных в json файл\n" + e.Message;
+                                }
+                            }
+                            else
                             {
                                 Message = "Необходимо выбрать должность сотрудника.";
-                                return;
                             }
-
-                            personDpo.RoleName = r.NameRole;
-                            personDpo.FirstName = tempPerson.FirstName;
-                            personDpo.LastName = tempPerson.LastName;
-                            personDpo.Birthday = PersonDpo.GetStringBirthday(tempPerson.Birthday);
-
-                            // Перенос данных из класса отображения
-                            // данных в класс Person
-
-                            var per = ListPerson.FirstOrDefault(p => p.Id == personDpo.Id);
-                            if (per != null)
-                            {
-                                per = per.CopyFromPersonDpo(personDpo);
-                            }
-                            SaveChanges(ListPerson);
                         }
 
 
@@ -214,16 +218,20 @@ namespace VizProgLaba1._1.ViewModel
 
                         if (result == MessageBoxResult.OK)
                         {
-                            var per = ListPerson.FirstOrDefault(p => p.Id == person.Id);
-                            if (per != null)
+                            try
                             {
-                                ListPerson.Remove(per);
-                                SaveChanges(ListPerson);
+                                ListPersonDpo.Remove(person);
+                                var per = ListPerson.FirstOrDefault(p => p.Id == person.Id);
+                                if (per != null)
+                                {
+                                    ListPerson.Remove(per);
+                                    SaveChanges(ListPerson);
+                                }
                             }
-
-                            ListPersonDpo.Remove(person);
-
-                            SelectedPersonDpo = null;
+                            catch (Exception e)
+                            {
+                                Error = "Ошибка удаления данных\n" + e.Message;
+                            }
                         }
 
                     }, (obj) => SelectedPersonDpo != null &&
@@ -238,9 +246,15 @@ namespace VizProgLaba1._1.ViewModel
         public ObservableCollection<Person> LoadPerson()
         {
             _jsonPersons = File.ReadAllText(path);
-            ListPerson = JsonConvert.DeserializeObject<ObservableCollection<Person>>(_jsonPersons)
-                ?? new ObservableCollection<Person>();
-            return ListPerson;
+            if (_jsonPersons != null)
+            {
+                ListPerson = JsonConvert.DeserializeObject<ObservableCollection<Person>>(_jsonPersons);
+                return ListPerson;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -255,17 +269,10 @@ namespace VizProgLaba1._1.ViewModel
                 {
                     writer.Write(jsonPerson);
                 }
-                Error = string.Empty;
             }
             catch (IOException e)
             {
-                Error = "Ошибка записи JSON-файла\n" + e.Message;
-                MessageBox.Show(Error, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            catch (UnauthorizedAccessException e)
-            {
-                Error = "Ошибка записи JSON-файла\n" + e.Message;
-                MessageBox.Show(Error, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                Error = "Ошибка записи json файла\n" + e.Message;
             }
         }
         #endregion

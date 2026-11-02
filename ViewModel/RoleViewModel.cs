@@ -9,7 +9,6 @@ using VizProgLaba1._1.Model;
 using VizProgLaba1._1.Helper;
 using VizProgLaba1._1.View;
 using System.Windows;
-using System.Windows.Input;
 namespace VizProgLaba1._1.ViewModel
 {
     public class RoleViewModel : INotifyPropertyChanged
@@ -112,8 +111,7 @@ namespace VizProgLaba1._1.ViewModel
 
                         Role role = SelectedRole;
 
-                        Role tempRole = new Role();
-                        tempRole = role.ShallowCopy();
+                        var tempRole = role.ShallowCopy();
 
                         wnRole.DataContext = new WindowNewRoleViewModel(
                             tempRole, result => wnRole.DialogResult = result);
@@ -165,9 +163,15 @@ namespace VizProgLaba1._1.ViewModel
         public ObservableCollection<Role> LoadRole()
         {
             _jsonRoles = File.ReadAllText(path);
-            ListRole = JsonConvert.DeserializeObject<ObservableCollection<Role>>(_jsonRoles)
-                ?? new ObservableCollection<Role>();
-            return ListRole;
+            if (_jsonRoles != null)
+            {
+                ListRole = JsonConvert.DeserializeObject<ObservableCollection<Role>>(_jsonRoles);
+                return ListRole;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -182,17 +186,10 @@ namespace VizProgLaba1._1.ViewModel
                 {
                     writer.Write(jsonRole);
                 }
-                Error = string.Empty;
             }
             catch (IOException e)
             {
-                Error = "Ошибка записи JSON-файла\n" + e.Message;
-                MessageBox.Show(Error, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            catch (UnauthorizedAccessException e)
-            {
-                Error = "Ошибка записи JSON-файла\n" + e.Message;
-                MessageBox.Show(Error, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                Error = "Ошибка записи json файла\n" + e.Message;
             }
         }
         #endregion
