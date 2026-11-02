@@ -13,8 +13,7 @@ namespace VizProgLaba1._1.ViewModel
 {
     public class RoleViewModel : INotifyPropertyChanged
     {
-        readonly string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-            "DataModels", "RoleData.json");
+        readonly string path = @"C:\Users\glgle\OneDrive\Desktop\2Semak PROGA\тест мой проект\raspisaniesettings\VizProgLaba2\DataModels\RoleData.json";
         string _jsonRoles = String.Empty;
         public string Error { get; set; }
 

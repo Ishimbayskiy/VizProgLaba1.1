@@ -14,8 +14,7 @@ namespace VizProgLaba1._1.ViewModel
 {
     public class PersonViewModel : INotifyPropertyChanged
     {
-        readonly string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-            "DataModels", "PersonData.json");
+        readonly string path = @"C:\Users\glgle\OneDrive\Desktop\2Semak PROGA\тест мой проект\raspisaniesettings\VizProgLaba2\DataModels\PersonData.json";
         string _jsonPersons = String.Empty;
         public string Error { get; set; }
         public string Message { get; set; }
