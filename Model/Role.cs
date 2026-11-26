@@ -1,15 +1,13 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+
 namespace VizProgLaba1._1.Model
 {
     public class Role : INotifyPropertyChanged
     {
         public int Id { get; set; }
+
         private string nameRole;
 
         public string NameRole
@@ -21,16 +19,24 @@ namespace VizProgLaba1._1.Model
                 OnPropertyChanged("NameRole");
             }
         }
-        public Role() { }
-        public Role(int id, string nameRole)
+
+        public Role()
         {
-            this.Id = id;
-            this.NameRole = nameRole;
+            Persons = new HashSet<Person>();
         }
 
-    public Role ShallowCopy()
+        public Role(int id, string nameRole)
+            : this()
         {
-            return (Role)this.MemberwiseClone();
+            Id = id;
+            NameRole = nameRole;
+        }
+
+        public virtual ICollection<Person> Persons { get; set; }
+
+        public Role ShallowCopy()
+        {
+            return (Role)MemberwiseClone();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

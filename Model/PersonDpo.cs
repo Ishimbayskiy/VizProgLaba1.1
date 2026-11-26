@@ -1,9 +1,7 @@
-
 using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using VizProgLaba1._1.ViewModel;
 
 namespace VizProgLaba1._1.Model
 {
@@ -12,13 +10,9 @@ namespace VizProgLaba1._1.Model
         public int Id { get; set; }
 
         private string _roleName;
-
         public string RoleName
         {
-            get
-            {
-                return _roleName;
-            }
+            get { return _roleName; }
             set
             {
                 _roleName = value;
@@ -27,13 +21,9 @@ namespace VizProgLaba1._1.Model
         }
 
         private string firstName;
-
         public string FirstName
         {
-            get
-            {
-                return firstName;
-            }
+            get { return firstName; }
             set
             {
                 firstName = value;
@@ -42,13 +32,9 @@ namespace VizProgLaba1._1.Model
         }
 
         private string lastName;
-
         public string LastName
         {
-            get
-            {
-                return lastName;
-            }
+            get { return lastName; }
             set
             {
                 lastName = value;
@@ -57,13 +43,9 @@ namespace VizProgLaba1._1.Model
         }
 
         private string birthday;
-
         public string Birthday
         {
-            get
-            {
-                return birthday;
-            }
+            get { return birthday; }
             set
             {
                 birthday = value;
@@ -71,59 +53,55 @@ namespace VizProgLaba1._1.Model
             }
         }
 
-        public PersonDpo() { }
-
-        public PersonDpo(int id, string roleName,
-            string firstName, string lastName, string birthday)
+        public PersonDpo()
         {
-            this.Id = id;
-            this.RoleName = roleName;
-            this.FirstName = firstName;
-            this.LastName = lastName;
-            this.Birthday = birthday;
+        }
+
+        public PersonDpo(
+            int id,
+            string roleName,
+            string firstName,
+            string lastName,
+            string birthday)
+        {
+            Id = id;
+            RoleName = roleName;
+            FirstName = firstName;
+            LastName = lastName;
+            Birthday = birthday;
         }
 
         public PersonDpo ShallowCopy()
         {
-            return (PersonDpo)this.MemberwiseClone();
+            return (PersonDpo)MemberwiseClone();
         }
 
         public PersonDpo CopyFromPerson(Person person)
         {
-            PersonDpo perDpo = new PersonDpo();
-
-            RoleViewModel vmRole = new RoleViewModel();
-
-            string role = string.Empty;
-
-            foreach (var r in vmRole.ListRole)
+            return new PersonDpo
             {
-                if (r.Id == person.RoleId)
-                {
-                    role = r.NameRole;
-                    break;
-                }
-            }
-
-            if (role != string.Empty)
-            {
-                perDpo.Id = person.Id;
-                perDpo.RoleName = role;
-                perDpo.FirstName = person.FirstName;
-                perDpo.LastName = person.LastName;
-                perDpo.Birthday = person.Birthday;
-            }
-
-            return perDpo;
+                Id = person.Id,
+                RoleName = person.Role == null ? string.Empty : person.Role.NameRole,
+                FirstName = person.FirstName,
+                LastName = person.LastName,
+                Birthday = person.Birthday.ToString(
+                    "dd.MM.yyyy",
+                    CultureInfo.GetCultureInfo("ru-RU"))
+            };
         }
 
-        /// <summary>
-        /// Приведение даты рождения к строке dd.MM.yyyy для JSON.
-        /// </summary>
         public static string GetStringBirthday(string value)
         {
             return DateTime.Parse(value, CultureInfo.GetCultureInfo("ru-RU"))
                 .ToString("dd.MM.yyyy");
+        }
+
+        public static DateTime GetDateTimeBirthday(string value)
+        {
+            return DateTime.ParseExact(
+                value,
+                "dd.MM.yyyy",
+                CultureInfo.GetCultureInfo("ru-RU"));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
